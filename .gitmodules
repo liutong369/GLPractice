@@ -1,0 +1,4 @@
+[submodule "open_source/glfw"]
+	path = open_source/glfw
+	url = git@github.com:glfw/glfw.git
+	branch = master
