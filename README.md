@@ -1,1 +1,1 @@
-# GLTest
+# GL Practice

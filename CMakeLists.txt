@@ -1,32 +1,24 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.14)
 
 project(gl_main)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(PROCESSOR_NUM 16)
+
+set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(SRC_DIR ${ROOT_DIR}/src)
+set(OPEN_SRC_DIR ${ROOT_DIR}/open_source)
+set(CMAKE_DIR ${ROOT_DIR}/cmake)
+
 if (NOT CMAKE_INSTALL_PREFIX)
-    set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/output)
+    set(CMAKE_INSTALL_PREFIX ${ROOT_DIR}/output)
 endif ()
 
-set(SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
-set(OPEN_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/open_source)
+if (NOT CMAKE_PREFIX_PATH)
+    set(CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
+endif ()
 
-find_package(glfw3 REQUIRED)
+include(${CMAKE_DIR}/compile_options.cmake)
 
-add_executable(${PROJECT_NAME}
-    ${SRC_DIR}/main.cpp
-    ${OPEN_SRC_DIR}/glad/src/glad.c
-)
-
-target_compile_options(${PROJECT_NAME} PRIVATE -g -O2)
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${OPEN_SRC_DIR}/glfw/include
-    ${OPEN_SRC_DIR}/glad/include
-)
-
-# target_link_options(${PROJECT_NAME} PRIVATE )
-target_link_libraries(${PROJECT_NAME} glfw3dll opengl32)
-target_link_directories(${PROJECT_NAME} PUBLIC
-    ${CMAKE_INSTALL_PREFIX}/glfw/lib/
-)
- 
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
-install(FILES ${CMAKE_INSTALL_PREFIX}/glfw/bin/glfw3.dll DESTINATION bin)
+add_subdirectory(src)
+add_subdirectory(open_source)
